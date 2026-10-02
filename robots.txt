@@ -1,0 +1,3 @@
+# Vista previa: no indexar hasta publicar en el dominio definitivo.
+User-agent: *
+Disallow: /
