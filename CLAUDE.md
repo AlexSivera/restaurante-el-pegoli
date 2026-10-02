@@ -19,6 +19,14 @@ node scripts/set-domain.mjs https://dominio.es   # al publicar: URLs absolutas +
 
 No hay tests unitarios. La verificación visual y funcional se hace con Playwright contra `npm run dev`.
 
+## Despliegue
+
+- GitHub Pages desde la rama `main` (raíz), repo `AlexSivera/restaurante-el-pegoli` → https://alexsivera.github.io/restaurante-el-pegoli/. Cada `git push` a `main` republica (tarda ~30 s).
+- Está en **modo vista previa** (`set-domain.mjs … --preview`): `noindex` en las páginas y `robots.txt` con `Disallow: /`, para que la propuesta no se indexe bajo el nombre del restaurante. Al pasar al dominio definitivo: `node scripts/set-domain.mjs https://dominio.es` (sin `--preview`) y añadir el `CNAME`.
+- La URL vigente se guarda en `package.json` → `siteUrl`. `serve.mjs` sirve también bajo esa ruta (`http://localhost:4173/restaurante-el-pegoli/`), igual que Pages.
+- Los recursos y enlaces entre páginas usan **rutas relativas** (`assets/…`, `../assets/…` en `/en/`). No uses rutas que empiecen por `/`, porque se rompen bajo el subdirectorio de Pages. Excepción: `404.html`, que usa `<base>` (lo mantiene `set-domain.mjs`).
+- `docs/` y `_src/` están en `.gitignore`: la documentación de agencia (análisis de reseñas y competencia) no se publica en el repo público.
+
 ## Arquitectura
 
 - `index.html` y `en/index.html` son **la misma página en dos idiomas**, mantenidas a mano. Cualquier cambio de estructura, clase o sección va en ambas (`npm run check` falla si las secciones difieren). Los ids de ancla son los mismos en los dos idiomas (en español).
